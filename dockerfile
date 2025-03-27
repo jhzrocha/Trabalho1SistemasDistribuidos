@@ -1,20 +1,18 @@
-# Usar a imagem base do Python
-FROM python:3.9
+# Usa a imagem base Ubuntu com MPICH
+FROM ubuntu:22.04
 
-# Instalar dependências do sistema para MPICH ou Open MPI
+# Instala dependências
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    libopenmpi-dev \
-    && rm -rf /var/lib/apt/lists/*  # Limpar cache de pacotes após instalação
+    python3 python3-pip mpich
 
-# Instalar mpi4py e numpy
-RUN pip install mpi4py numpy
+# Instala mpi4py
+RUN pip3 install mpi4py
 
-# Definir o diretório de trabalho
+# Cria diretório de trabalho
 WORKDIR /app
 
-# Copiar o código Python para dentro do container
-COPY mpi_prime.py /app
+# Copia o código para dentro do contêiner
+COPY mpi_prime.py /app/mpi_prime.py
 
-# Definir o comando padrão (isso será sobrescrito no docker-compose)
-CMD ["python", "mpi_prime.py"]
+# Comando padrão de execução
+CMD ["mpiexec", "-n", "2", "python3", "/app/mpi_prime.py"]

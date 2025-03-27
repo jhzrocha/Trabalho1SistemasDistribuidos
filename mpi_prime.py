@@ -4,7 +4,7 @@ def main():
     comm = MPI.COMM_WORLD  # Comunicador global
     rank = comm.Get_rank()  # Identificador do processo
     size = comm.Get_size()  # Número total de processos
-
+    print(rank)
     if rank == 0:  # Processo manager
         number = 10  # Número a ser enviado ao worker
         print(f"Manager enviando o número: {number}")

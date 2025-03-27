@@ -1,19 +1,19 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  manager:
+  mpi-master:
     build: .
-    command: mpirun --allow-run-as-root -np 2 python mpi_prime.py  # Garantir 2 processos
+    container_name: mpi-master
     networks:
-      - mpinet
-    depends_on:
-      - worker
+      - mpi_network
+    command: ["mpiexec", "-n", "2", "--host", "mpi-master,mpi-worker", "python3", "/app/mpi_prime.py"]
 
-  worker:
+  mpi-worker:
     build: .
+    container_name: mpi-worker
     networks:
-      - mpinet
+      - mpi_network
 
 networks:
-  mpinet:
+  mpi_network:
     driver: bridge
