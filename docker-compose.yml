@@ -1,19 +1,18 @@
-version: '3.8'
-
+version: '3'
 services:
-  mpi-master:
+  manager:
     build: .
-    container_name: mpi-master
+    container_name: manager
     networks:
       - mpi_network
-    command: ["mpiexec", "-n", "2", "--host", "mpi-master,mpi-worker", "python3", "/app/mpi_prime.py"]
 
-  mpi-worker:
+  worker:
     build: .
-    container_name: mpi-worker
+    container_name: worker
     networks:
       - mpi_network
+    depends_on:
+      - manager
 
 networks:
   mpi_network:
-    driver: bridge
