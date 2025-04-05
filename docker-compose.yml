@@ -1,18 +1,22 @@
 version: '3'
+
 services:
   manager:
-    build: .
-    container_name: manager
+    build:
+      context: .
+      dockerfile: Dockerfile.manager
+    depends_on:
+      - worker
     networks:
-      - mpi_network
+      - mynetwork
 
   worker:
-    build: .
-    container_name: worker
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
     networks:
-      - mpi_network
-    depends_on:
-      - manager
+      - mynetwork
 
 networks:
-  mpi_network:
+  mynetwork:
+    driver: bridge
